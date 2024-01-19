@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { registerUser } from '../actions/authActions'
+import { loginUser } from '../actions/authActions'
 
 interface authUser {
     loading: boolean
@@ -17,76 +17,22 @@ const initialState = {
     success: false,
 } as authUser
 
-const authUserRegisterSlice_ = createSlice({
-    name: 'authUser/register',
-    initialState,
-    reducers: {
-        // authPending(state) {
-        //     state.loading = true
-        //     state.success = false
-        //     state.error = null
-        // },
-    },
-    extraReducers: (builder) => {
-        builder.addCase(registerUser.pending, (state) => {
-            state.loading = true
-            state.success = false
-            state.error = null
-        })
-        builder.addCase(registerUser.fulfilled, (state) => {
-            state.loading = false
-            state.success = true
-        })
-        builder.addCase(
-            registerUser.rejected, (state, { payload }) => {
-                state.loading = false
-                // @ts-ignore
-                state.error = payload
-            }
-        )
-    }
-})
-
 const authUserLoginSlice_ = createSlice({
     name: 'authUser/login',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(registerUser.pending, (state) => {
+        builder.addCase(loginUser.pending, (state) => {
             state.loading = true
             state.success = false
             state.error = null
         })
-        builder.addCase(registerUser.fulfilled, (state) => {
+        builder.addCase(loginUser.fulfilled, (state) => {
             state.loading = false
             state.success = true
         })
         builder.addCase(
-            registerUser.rejected, (state, { payload }) => {
-                state.loading = false
-                //@ts-ignore
-                state.error = payload
-            }
-        )
-    }
-})
-
-const authUserSlice_ = createSlice({
-    name: 'authUser',
-    initialState,
-    reducers: {},
-    extraReducers: (builder) => {
-        builder.addCase(registerUser.pending, (state) => {
-            state.loading = true
-            state.success = false
-            state.error = null
-        })
-        builder.addCase(registerUser.fulfilled, (state) => {
-            state.loading = false
-            state.success = true
-        })
-        builder.addCase(
-            registerUser.rejected, (state, { payload }) => {
+            loginUser.rejected, (state, { payload }) => {
                 state.loading = false
                 //@ts-ignore
                 state.error = payload
@@ -96,7 +42,5 @@ const authUserSlice_ = createSlice({
 })
 
 
-export const authUserRegisterSlice = authUserRegisterSlice_.reducer
 export const authUserLoginSlice = authUserLoginSlice_.reducer
-export const authUserSlice = authUserSlice_.reducer
 

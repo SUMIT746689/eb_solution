@@ -23,58 +23,64 @@ const PrivateLayout: FC<LayoutType> = ({ children }) => {
     console.log({ pathname })
     const router = useRouter();
     return (
-        <Box sx={{ display: 'flex' }}>
+        <>
             <CssBaseline />
-            <Drawer
-                sx={{
-                    width: drawerWidth,
-                    flexShrink: 0,
-                    '& .MuiDrawer-paper': {
+            <Box display="grid" gridTemplateColumns="240px 1fr" >
+                <Drawer
+                    sx={{
                         width: drawerWidth,
-                        boxSizing: 'border-box',
-                    },
-                }}
-                variant="permanent"
-                anchor="left"
-            >
-                <AppBar variant="outlined" color="transparent" sx={{
-                    boxShadow: "none",
-                    height: '120px',
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between"
-                    // border:'none'
-                    // backgroundColor:"white"
-                }}>
+                        flexShrink: 0,
+                        '& .MuiDrawer-paper': {
+                            width: drawerWidth,
+                            boxSizing: 'border-box',
+                        },
+                    }}
+                    variant="permanent"
+                    anchor="left"
+                >
+                    <Toolbar color="secondary" sx={{
+                        height: '120px',
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        alignItems:'start',
+                        pt: '26px'
+                    }}>
 
-                    <Toolbar >
+                        {/* <Toolbar > */}
                         <Image src='/logo.png' alt="logo" width={80} height={42} style={{ objectFit: "cover" }} />
-                    </Toolbar>
+                        {/* </Toolbar> */}
 
-                    <Grid pl="34px" textTransform="uppercase" color={textColor} fontSize={'12px'} fontWeight={500}>
-                        Pages
-                    </Grid>
-                </AppBar>
-                <Toolbar />
-                <List sx={{ pt: '60px' }}>
-                    {[
-                        { text: 'Dashboard', path: '/' },
-                        { text: 'Users', path: '/users' },
-                        { text: 'Sales', path: '/sales' }
-                    ].map(({text,path}, index) => (
-                        <ListItem key={text} >
-                            <ListItemButton sx={{ ":hover": { bgcolor: lightBgColor, borderRadius: "12px" } }}>
-                                <ListItemIcon sx={{ color: textColor }}>
-                                    {icons[index]}
-                                </ListItemIcon>
-                                <ListItemText sx={{ color: textColor, fontSize: '14px' }} primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
-            </Drawer>
-            {children}
-        </Box>
+                        <Grid textTransform="uppercase" color={textColor} fontSize={'12px'} fontWeight={500}>
+                            Pages
+                        </Grid>
+                    </Toolbar>
+                    <List >
+                        {[
+                            { text: 'Dashboard', path: '/' },
+                            { text: 'Users', path: '/users' },
+                            { text: 'Sales', path: '/sales' }
+                        ].map(({ text, path }, index) => (
+                            <ListItem key={text} >
+                                <ListItemButton onClick={() => { router.push(path) }} sx={{
+                                    bgcolor: pathname === path ? lightBgColor : 'white',
+                                    borderRadius: "12px",
+                                    ":hover": { bgcolor: lightBgColor }
+                                }}>
+                                    <ListItemIcon sx={{ color: textColor }}>
+                                        {icons[index]}
+                                    </ListItemIcon>
+                                    <ListItemText sx={{ color: textColor, fontSize: '14px' }} primary={text} />
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                    </List>
+                </Drawer>
+                <Grid container item >
+                    {children}
+                </Grid>
+            </Box>
+        </>
     )
 }
 

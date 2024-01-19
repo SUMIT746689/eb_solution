@@ -1,142 +1,87 @@
 "use client"
-import React, { FC, useState } from "react";
-import { ArrowLogo, DeleteLogo, EditLogo, FileUploadLogo, MinusLogo, SignLogo } from "@/components/Logo/Logo";
-import { useGetUsersQuery } from "@/redux/services/users";
-import { ButtonWrapper } from "@/components/Button/Button";
-import { Container } from "@/components/Container/Container";
-import { TableBody, TableHead } from "@/components/Table/Table";
+import React, { FC } from "react";
+import { Avatar, Grid, InputAdornment, TextField } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Image from "next/image";
+import { useAppSelector } from "@/redux/hook";
 
-const dummyAbout = [
-    { title: "DevOps engineer", about: "Using git, jenkins, ansible, docker, kubernetes" },
-    { title: "Design software", about: "Super lightweight design app" },
-    { title: "Data prediction", about: "AI and machine learning data" },
-    { title: "Android Developer", about: "React native build cross platform apps" },
-    { title: "Backend Davalper", about: "Super lightweight design app" },
-    { title: "UI/UX  developer", about: "Super lightweight design app" },
-    { title: "DevOps engineer", about: "Using git, jenkins, ansible, docker, kubernetes" },
-    { title: "Design software", about: "Super lightweight design app" },
-    { title: "Data prediction", about: "AI and machine learning data" },
-    { title: "Android Developer", about: "React native build cross platform apps" },
-    { title: "Backend Davalper", about: "Super lightweight design app" },
-    { title: "UI/UX  developer", about: "Super lightweight design app" },
-    { title: "Backend Davalper", about: "Super lightweight design app" },
-    { title: "UI/UX  developer", about: "Super lightweight design app" },
-    { title: "DevOps engineer", about: "Using git, jenkins, ansible, docker, kubernetes" },
-    { title: "Design software", about: "Super lightweight design app" },
-    { title: "Data prediction", about: "AI and machine learning data" },
-
-]
-
+const textColor = '#B0B7C3';
+const textDarkColor = '#4E5D78'
+const serarchBtnBackground = '#F0F5FA'
 type UsersType = {
     data: any[];
 }
 const Users: FC<UsersType> = ({ data }) => {
-    const [page, setPage] = useState(1)
-    // const { data, error, isLoading } = useGetUsersQuery(page);
-    const error = false;
-    const isLoading = false;
-    const [isActive, setIsActive] = useState<any>({ 3: true })
-
-    const handlePreviousPage = () => {
-        setPage((page) => {
-            if (page === 1) return Number(data?.total_pages);
-            return page - 1
-        })
-    }
-    const handleNextPage = () => {
-        setPage(page => {
-            if (page === data?.total_pages) return 1;
-            return page + 1
-        })
-    }
-    const handleAddUser = (user_id: number) => {
-        setIsActive((value: any) => {
-            const value_ = { ...value };
-            value_[user_id] = !value_[user_id];
-            return value_;
-        })
-    }
-
     return (
         <>
-            <Container>
-                <section className=" py-8 flex justify-between">
-                    <div className=" text-2xl font-medium text-gray-900">Users</div>
-                    <div className="flex gap-3">
-                        <ButtonWrapper handleClick={() => { }}>
-                            <div className="flex gap-2">
-                                <FileUploadLogo />
-                                Import
-                            </div>
-                        </ButtonWrapper>
-                        <ButtonWrapper handleClick={() => { }} variant="contain"> + Add User</ButtonWrapper>
-                    </div>
-                </section>
-
-                <section className="border shadow-lg rounded-lg overflow-hidden ">
-                    <table className=" w-full">
+            <Grid container px="36px" pt="24px">
+                <Grid item height="120px" width="100%" >
+                    <Grid item mb="auto" display="flex" justifyContent="space-between" >
+                        <TextField
+                            sx={{
+                                color: textColor,
+                                maxWidth: '540px',
+                                width: '100%',
+                                '& fieldset': {
+                                    border: 'none'
+                                },
+                            }}
+                            placeholder="Search"
+                            InputProps={{
+                                style: {
+                                    backgroundColor: serarchBtnBackground,
+                                    borderRadius: '16px',
+                                },
+                                endAdornment: <InputAdornment position="start"><SearchIcon sx={{ width: '22px', height: '22px', color: '#B0B7C3' }} /></InputAdornment>,
+                            }}
+                        />
+                        <Grid display="flex" columnGap="40px" height="fit-content" my="auto" sx={{ cursor: "pointer" }}>
+                            <NotificationsNoneIcon sx={{ color: textColor,my:'auto' }} />
+                            <Avatar alt="Remy Sharp" src="/dummy-avatar.png" />
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid container fontSize="23px" pb="40px" fontWeight={600}>
+                    User List
+                </Grid>
+                <Grid item width="100%">
+                    <table style={{ width: "100%", borderCollapse: 'separate', borderSpacing: '48px 15px', color: textDarkColor, fontWeight: 600, textAlign: 'left' }} >
                         <thead>
-                            <TableHead datas={[
-                                <div className=" flex gap-4 my-auto">
-                                    <div className={` border w-5 h-5 text-center border-[#7F56D9] rounded-md flex justify-center items-center cursor-pointer `}>{Object.keys(isActive).length > 0 && <MinusLogo />}</div>
-                                    <span>User Info</span>
-                                    <span className=" cursor-pointer hover:scale-125"><ArrowLogo /></span>
-                                </div>,
-                                "About",
-                                "Status",
-                                ""]} />
+                            <tr style={{ fontSize: "12px" }}>
+                                <th>#ID</th>
+                                <th>USER</th>
+                                <th>EMAIL</th>
+                                <th style={{ textAlign: 'right' }}>OPTIONS</th>
+                            </tr>
                         </thead>
-                        <tbody>
+                        <tbody style={{ fontSize: '14px' }} >
                             {
-                                data?.data?.map((user: any) => (
-                                    <TableBody key={user?.id} datas={[
-                                        <div className="flex gap-3">
-                                            <button onClick={() => handleAddUser(user?.id)} className={(isActive[user?.id] ? 'border-[#7F56D9] ' : ' border-gray-300 ') + `border w-5 h-5 text-center rounded-md flex justify-center items-center cursor-pointer my-auto`}> {isActive[user.id] && <SignLogo />}</button>
-                                            <img src={user.avatar} className=" w-10 h-10 rounded-full object-contain" />
-                                            <div>
-                                                <div className=" text-sm font-medium text-black">{user.first_name} {user.last_name}</div>
-                                                <div className=" text-gray-500 font-normal">{user?.email}</div>
+                                data?.map((user: any) => (
+                                    <tr key={user.id}>
+                                        <td>
+                                            {user?.id}
+                                        </td>
+                                        <td style={{ display: 'flex', columnGap: "20px", alignItems: "center" }}>
+                                            <Image src={user?.avatar} width={60} height={60} alt="image" style={{ borderRadius: '15px' }} />
+                                            <div >
+                                                {user?.first_name} {user?.last_name}
                                             </div>
-                                        </div>,
-                                        <div className=" text-sm font-normal">
-                                            <div className=" text-black">{dummyAbout[user.id].title}</div>
-                                            <div>{dummyAbout[user.id].about}</div>
-                                        </div>,
-                                        <div className=" text-xs font-medium">
-                                            {['Customer', 'Churned'][Math.floor(Math.random() * 2)] === 'Customer' ?
-                                                <div className=" text-green-700 rounded-xl bg-green-100 py-[2px] px-2 w-fit">Customer</div>
-                                                :
-                                                <div className=" text-gray-700 rounded-xl bg-gray-100 py-[2px] px-2 w-fit">Churned</div>
-                                            }
-                                        </div>,
-                                        <div className=" flex">
-                                            <div className=" p-2 cursor-pointer hover:bg-slate-100">
-                                                <DeleteLogo />
-                                            </div>
-                                            <div className=" p-2 cursor-pointer hover:bg-slate-100">
-                                                <EditLogo />
-                                            </div>
-                                        </div>
-
-                                    ]} />
+                                        </td>
+                                        <td>
+                                            {user?.email}
+                                        </td>
+                                        <td style={{ textAlign: 'right' }}>
+                                            <MoreHorizIcon sx={{ width: 30, height: 30, color: textDarkColor }} />
+                                        </td>
+                                    </tr>
                                 ))
                             }
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colSpan={4}>
-                                    <div className="flex justify-between px-6 py-3">
-                                        <ButtonWrapper handleClick={handlePreviousPage}>Previous</ButtonWrapper>
-                                        <div className="my-auto">Page {data?.page} of {data?.total_pages}</div>
-                                        <ButtonWrapper handleClick={handleNextPage}>Next</ButtonWrapper>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tfoot>
-
                     </table>
-                </section>
-            </Container>
+                </Grid>
+            </Grid>
         </>
     )
 }

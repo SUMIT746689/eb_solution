@@ -1,6 +1,7 @@
-import AuthLayout from '@/layout/AuthLayout'
+
 import PrivateLayout from '@/layout/PrivateLayout'
 import type { Metadata } from 'next'
+import ValidateUser from './ValidateUser'
 // import { Inter } from 'next/font/google'
 // import './globals.css'
 
@@ -15,12 +16,15 @@ export default function RootLayout({
 }: {
     children: React.ReactNode
 }) {
+
     return (
         <html lang="en">
             <body style={{ margin: 0 }}>
-                <PrivateLayout>
-                    {children}
-                </PrivateLayout>
+                <ValidateUser>
+                    <PrivateLayout>
+                        {children}
+                    </PrivateLayout>
+                </ValidateUser>
             </body>
             {/* <body className={inter.className}> */}
             {/* </body> */}

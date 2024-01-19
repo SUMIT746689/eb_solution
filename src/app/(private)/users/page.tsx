@@ -5,7 +5,6 @@ import axios from "axios";
 const Page = async () => {
     const { data } = await axios.get(`${API_KEY}/users`)
     const { data: userData } = data || {};
-    console.log({ userData });
     return (
         <>
             <Users data={userData || []} />
